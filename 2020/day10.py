@@ -28,6 +28,7 @@ def part2():
     adapters.insert(len(adapters), adapters[len(adapters) - 1] + 3)
     pow2 = 0
     pow7 = 0
+    pow13 = 0
     i = 0
     while i < len(adapters) - 1:
         cur = adapters[i]
@@ -44,9 +45,11 @@ def part2():
                     pow2 += 2
                 elif len(cur_set) == 5:
                     pow7 += 1
+                elif len(cur_set) == 6:
+                    pow13 += 1
                 i = x
                 break
-    return pow(2, pow2) * pow(7, pow7)
+    return pow(2, pow2) * pow(7, pow7) * pow(13, pow13)
 
 print(part2())
 
