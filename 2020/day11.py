@@ -1,5 +1,5 @@
 puzzle_input = list()
-with open('day11.txt', 'r') as f:
+with open('input_smaller.txt', 'r') as f:
     for l in f.readlines():
         puzzle_input.append(l.strip())
     f.close()
@@ -11,6 +11,7 @@ class WaitingArea:
         self.neighbors = dict()
         self.rows = 0
         self.cols = 0
+        self.iteration = 0
 
     def fill_seats(self, puzzle, part):
         self.rows = len(puzzle)
@@ -56,6 +57,7 @@ class WaitingArea:
                     next[(x,y)] = cur
         self.prev = self.state
         self.state = next
+        self.iteration += 1
 
     def should_stop(self):
         return self.prev == self.state
@@ -69,11 +71,16 @@ class WaitingArea:
         return count
 
     def print(self):
+        f = open('output_jdog.txt', 'a')
+        f.write('Iteration: ' + str(self.iteration) + '\n')
         for y in range(self.rows):
             cur = ''
             for x in range(self.cols):
                 cur += self.state[(x, y)]
-            print(cur)
+            cur += '\n'
+            f.write(cur)
+        f.write('\n')
+        f.close()
 
     def get_check_list(self, x, y, part):
         check_list = list()
@@ -174,6 +181,7 @@ def part1():
     wa.fill_seats(puzzle_input, 1)
     while not wa.should_stop():
         wa.apply_rules(1)
+        wa.print()
     return wa.get_seats_occ()
 
 def part2():
@@ -184,4 +192,4 @@ def part2():
     return wa.get_seats_occ()
 
 print(part1())
-print(part2())
+# print(part2())
