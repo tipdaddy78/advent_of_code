@@ -1,5 +1,5 @@
 puzzle_input = list()
-with open('input_smaller.txt', 'r') as f:
+with open('day11.txt', 'r') as f:
     for l in f.readlines():
         puzzle_input.append(l.strip())
     f.close()
