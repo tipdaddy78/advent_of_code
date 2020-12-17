@@ -1,3 +1,5 @@
+from datetime import datetime
+
 puzzle_in = [0,1,5,10,3,12,19]
 
 class MemoryGame:
@@ -24,13 +26,14 @@ class MemoryGame:
             self.idx += 1
         return self.last
 
-def part1():
-    mg = MemoryGame(puzzle_in)
+def part1(mg):
     return mg.play_game(2020)
 
-def part2():
-    mg = MemoryGame(puzzle_in)
+def part2(mg):
     return mg.play_game(30000000)
 
-print(part1())
-print(part2())
+mg = MemoryGame(puzzle_in)
+print(part1(mg))
+print(datetime.now())
+print(part2(mg))
+print(datetime.now())
