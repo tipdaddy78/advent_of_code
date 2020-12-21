@@ -1,5 +1,5 @@
 lines = list()
-with open('day19_test.txt', 'r') as f:
+with open('day19.txt', 'r') as f:
     lines = [line.strip() for line in f]
     f.close()
 
@@ -96,22 +96,76 @@ def run(m):
     rules = get_rules()
     values = get_values()
     matches = list()
+    count = 0
     if m == 1:
         valid = get_valid_strings('0', list(), True)
+        for v in values:
+            if v in valid:
+                matches.append(v)
+                count += 1
     else:
-        valid = get_valid_strings('0', list(), False)
-        print(valid)
-    valid2 = get_valid_strings('42', list(), True)
-    valid3 = get_valid_strings('31', list(), True)
-    print(valid2)
-    print(valid3)
-    count = 0
-    for v in values:
-        if v in valid:
-            matches.append(v)
-            count += 1
+        valid42 = get_valid_strings('42', list(), True)
+        valid31 = get_valid_strings('31', list(), True)
+        print(valid42)
+        print(valid31)
+        idx_len = len(valid42[0])
+        for value in values:
+            # Loop in slices of the current line.
+            end_i = len(value)
+            start_i = end_i - idx_len
+            middle_i = -1
+            v_31 = False
+            l_31 = list()
+            l_42 = list()
+            while start_i >= 0:
+                # start from the back and work to some middle point
+                cur = value[start_i : end_i]
+                # back portion of strings should match something in 31's valid list
+                if cur in valid31:
+                    end_i -= idx_len
+                    start_i -= idx_len
+                    l_31.insert(0, cur)
+                    continue
+                else:
+                    # no match means we've met the matches to 42
+                    if cur in valid42:
+                        middle_i = end_i
+                        v_31 = True
+                        break
+                    # no match on 42 as well means it's not a valid string.
+                    else:
+                        break
+            # middle_i being -1 or the end of the string means we never matched with 31 and string isn't valid
+            if middle_i in [-1, len(value)] or not v_31:
+                continue
+            # start again but from beginning of the string
+            start_i = 0
+            end_i = idx_len
+            v_42 = True
+            while end_i <= middle_i:
+                # get current slice and see if it's in 42 set.
+                cur = value[start_i : end_i]
+                if cur in valid42:
+                    start_i += idx_len
+                    end_i += idx_len
+                    l_42.append(cur)
+                    continue
+                else:
+                    v_42 = False
+                    break
+            # if it found matches all the way up to the mid point, end_i should be idx_len values greater than middle_i
+            if v_31 and v_42 and len(l_42) > len(l_31):
+                print("Cur: " + value + " has a length of: " + str(len(value)))
+                print(l_42)
+                print(l_31)
+                matches.append(value)
+                count += 1
     print(matches)
     return count
 
-print(run(1))
+
+
+
+
+# print(run(1))
 print(run(2))
