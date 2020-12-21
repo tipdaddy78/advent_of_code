@@ -154,6 +154,7 @@ def run(m):
                     v_42 = False
                     break
             # if it found matches all the way up to the mid point, end_i should be idx_len values greater than middle_i
+            # due to rules, there should be more matches to rule 42 than to 31.
             if v_31 and v_42 and len(l_42) > len(l_31):
                 print("Cur: " + value + " has a length of: " + str(len(value)))
                 print(l_42)
