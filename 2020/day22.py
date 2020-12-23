@@ -12,12 +12,14 @@ class Deck:
         self.cards.append(winner)
         self.cards.append(loser)
 
-    def get_score(self):
+    def get_score(self, p1):
         l = len(self.cards)
         score = 0
         for c in self.cards:
             score += (l * c)
             l -= 1
+        if p1:
+            score *= -1
         return score
 
 
@@ -25,12 +27,12 @@ class WarGame:
     def __init__(self, p1_cards, p2_cards):
         self.p1 = Deck(p1_cards)
         self.p2 = Deck(p2_cards)
-        self.mem = dict()
+        self.mem = set()
         self.round = 0
 
     def play_game(self, m = 1):
         # first check to see if game has been "played" before.
-        key = self.generate_key()
+        key = self.generate_key(True)
         if key in game_results.keys():
             # if it has, don't bother playing game, just return result
             return game_results.get(key)
@@ -40,10 +42,10 @@ class WarGame:
                 if not self.add_to_mem():
                     # in a state that's been seen,
                     # P1 wins.
-                    key = self.generate_key()
-                    score = self.p1.get_score()
-                    game_results[key] = (1, score)
-                    return (1, score)
+                    key = self.generate_key(True)
+                    score = self.p1.get_score(True)
+                    game_results[key] = score
+                    return score
             # Draw Cards
             c1 = self.p1.draw_card()
             c2 = self.p2.draw_card()
@@ -54,7 +56,7 @@ class WarGame:
                 sub_p2 = self.p2.cards[:c2].copy()
                 wg = WarGame(sub_p1, sub_p2)
                 ret = wg.play_game(2)
-                if ret[0] == 1:
+                if ret < 0: # Scores are negative when P1 wins.
                     # player 1 won the sub-game
                     self.p1.add_cards(c1, c2)
                 else:
@@ -68,43 +70,40 @@ class WarGame:
         # Based on the winner of the game, place the result in game results dict
         # This speeds things up for further rounds.
         if len(self.p1.cards) == 0:
-            key = self.generate_key()
-            score = self.p2.get_score()
-            game_results[key] = (2, score)
-            return (2, score)
+            key = self.generate_key(True)
+            score = self.p2.get_score(False)
+            game_results[key] = score
+            return score
         else:
-            key = self.generate_key()
-            score = self.p1.get_score()
-            game_results[key] = (1, score)
-            return (1, score)
+            key = self.generate_key(True)
+            score = self.p1.get_score(True)
+            game_results[key] = score
+            return score
 
     # Checks if state has been seen before
     # Returns True if state never seen and added
     # Returns False if state has been seen before.
     def add_to_mem(self):
-        temp = list()
-        temp.append('P1')
-        for c1 in self.p1.cards:
-            temp.append(str(c1))
-        temp.append('P2')
-        for c2 in self.p2.cards:
-            temp.append(str(c2))
-        if temp in self.mem.values():
+        key = self.generate_key(False)
+        if key in self.mem:
             return False
         else:
-            self.mem[self.round] = temp
-            self.round += 1
+            self.mem.add(key)
             return True
 
-    def generate_key(self):
+    def generate_key(self, game):
+        deck1 = list()
+        deck2 = list()
+        if game:
+            deck1 = self.p1.starting
+            deck2 = self.p2.starting
+        else:
+            deck1 = self.p1.cards
+            deck2 = self.p2.cards
         key = 'P1:'
-        for c1 in self.p1.starting:
-            key += str(c1)
-            key += ','
+        key += str(deck1)
         key += ' P2:'
-        for c2 in self.p2.starting:
-            key += str(c2)
-            key += ','
+        key += str(deck2)
         return key
 
 
@@ -133,7 +132,7 @@ def run(m):
     game_results.clear()
     return ret
 
-print(run(1))
+# print(run(1))
 print(run(2))
 
 
