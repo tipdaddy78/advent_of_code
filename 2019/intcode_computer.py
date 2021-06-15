@@ -1,8 +1,9 @@
 class Intcode:
-    def __init__(self, string_memory):
+    def __init__(self, string_memory, isAI=False):
         self.memory = dict()
         self.pos = 0
         self.base = 0
+        self.isAI = isAI
         for i in range(0, len(string_memory)):
             self.memory[i] = int(string_memory[i])
             # self.memory.append(int(s))
@@ -121,7 +122,7 @@ class Intcode:
             self.memory[p3] = mult1 * mult2
         self.pos += 4
 
-    def op_3(self, p1, m1):
+    def op_3_human(self, p1, m1):
         i = input("Please enter an input parameter: ")
         if m1 == 2:
             self.memory[self.base + p1] = int(i)
