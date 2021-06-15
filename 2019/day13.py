@@ -1,22 +1,23 @@
 intcodes = dict()
-input_val = 2
+input_val = 1
 
-with open('day9.txt', 'r') as f:
+with open('day13.txt', 'r') as f:
     data = f.read()
     string_codes = data.strip().split(',')
     for c in range(len(string_codes)):
         intcodes[c] = int(string_codes[c])
     f.close()
 
-# test_intcodes = [104,1125899906842624,99]
-# test_intcodes = [109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99]
-# intcodes.clear()
-# for c in range(len(test_intcodes)):
-#      intcodes[c] = int(test_intcodes[c])
-# intcodes = test_intcodes
+block_tile_count = 0
 
 position = 0
 relative_base = 0
+output_type = 0
+intcodes[0] = 2
+paddle = (0, 0)
+ball = (0, 0)
+cur_x = 0
+cur_y = 0
 while intcodes[position] != 99:
     op_code = intcodes[position]
     e = 0
@@ -57,6 +58,12 @@ while intcodes[position] != 99:
         intcodes[d] = e
         position += 4
     elif op_code == 3:
+        if (ball[0] > paddle[0]):
+            input_val = 1
+        elif(ball[0] < paddle[0]):
+            input_val = -1
+        else:
+            input_val = 0
         intcodes[b] = input_val
         position += 2
     elif op_code == 4:
@@ -64,7 +71,21 @@ while intcodes[position] != 99:
             op1 = intcodes[b]
         else:
             op1 = 0
-        print(op1)
+        if output_type == 0:
+            print("X: " + str(op1))
+            cur_x = op1
+        elif output_type == 1:
+            print("Y: " + str(op1))
+            cur_y = op1
+        else:
+            print("Type: " + str(op1))
+            if op1 == 2:
+                block_tile_count += 1
+            elif op1 == 3:
+                paddle = (cur_x, cur_y)
+            elif op1 == 4:
+                ball = (cur_x, cur_y)
+        output_type = (output_type + 1) % 3
         position += 2
     elif op_code == 5:
         if b in intcodes.keys():
@@ -184,13 +205,33 @@ while intcodes[position] != 99:
                 intcodes[d + relative_base] = e
             position += 4
         elif param_op == 3:
+            if (ball[0] > paddle[0]):
+                input_val = 1
+            elif (ball[0] < paddle[0]):
+                input_val = -1
+            else:
+                input_val = 0
             if b_mode == 0:
                 intcodes[b] = input_val
             else:
                 intcodes[b + relative_base] = input_val
             position += 2
         elif param_op == 4:
-            print(op1)
+            if output_type == 0:
+                print("X: " + str(op1))
+                cur_x = op1
+            elif output_type == 1:
+                print("Y: " + str(op1))
+                cur_y = op1
+            else:
+                print("Type: " + str(op1))
+                if op1 == 2:
+                    block_tile_count += 1
+                elif op1 == 3:
+                    paddle = (cur_x, cur_y)
+                elif op1 == 4:
+                    ball = (cur_x, cur_y)
+            output_type = (output_type + 1) % 3
             position += 2
         elif param_op == 5:
             if op1 != 0:
@@ -229,3 +270,5 @@ while intcodes[position] != 99:
         elif param_op == 9:
             relative_base += op1
             position += 2
+
+print(block_tile_count)

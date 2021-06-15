@@ -1,19 +1,22 @@
 intcodes = dict()
-input_val = 2
+input_val = 1
 
-with open('day9.txt', 'r') as f:
+with open('day11.txt', 'r') as f:
     data = f.read()
     string_codes = data.strip().split(',')
     for c in range(len(string_codes)):
         intcodes[c] = int(string_codes[c])
     f.close()
 
-# test_intcodes = [104,1125899906842624,99]
-# test_intcodes = [109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99]
-# intcodes.clear()
-# for c in range(len(test_intcodes)):
-#      intcodes[c] = int(test_intcodes[c])
-# intcodes = test_intcodes
+hull = dict()
+robot_position = (0, 0)
+hull[robot_position] = True
+robot_direction = 'U'
+paintMode = True
+minX = 100000000000000000
+minY = 100000000000000000
+maxX = 0
+maxY = 0
 
 position = 0
 relative_base = 0
@@ -57,6 +60,11 @@ while intcodes[position] != 99:
         intcodes[d] = e
         position += 4
     elif op_code == 3:
+        cur_panel = hull.get(robot_position)
+        if (cur_panel == None) or cur_panel == False:
+            input_val = 0
+        else:
+            input_val = 1
         intcodes[b] = input_val
         position += 2
     elif op_code == 4:
@@ -65,6 +73,48 @@ while intcodes[position] != 99:
         else:
             op1 = 0
         print(op1)
+        if paintMode:
+            if op1 == 0:
+                hull[robot_position] = False
+            else:
+                hull[robot_position] = True
+        else:
+            if op1 == 0: #turn LEFT
+                if robot_direction == 'U':
+                    robot_direction = 'L'
+                elif robot_direction == 'L':
+                    robot_direction = 'D'
+                elif robot_direction == 'D':
+                    robot_direction = 'R'
+                else:
+                    robot_direction = 'U'
+            else: #turn RIGHT
+                if robot_direction == 'U':
+                    robot_direction = 'R'
+                elif robot_direction == 'L':
+                    robot_direction = 'U'
+                elif robot_direction == 'D':
+                    robot_direction = 'L'
+                else:
+                    robot_direction = 'D'
+            if robot_direction == 'U':
+                new_robot_position = (robot_position[0], robot_position[1] + 1)
+            elif robot_direction == 'L':
+                new_robot_position = (robot_position[0] - 1, robot_position[1])
+            elif robot_direction == 'D':
+                new_robot_position = (robot_position[0], robot_position[1] - 1)
+            else:
+                new_robot_position = (robot_position[0] + 1, robot_position[1])
+            robot_position = new_robot_position
+            if robot_position[0] > maxX:
+                maxX = robot_position[0]
+            if robot_position[0] < minX:
+                minX = robot_position[0]
+            if robot_position[1] > maxY:
+                maxY = robot_position[1]
+            if robot_position[1] < minY:
+                minY = robot_position[1]
+        paintMode = not paintMode
         position += 2
     elif op_code == 5:
         if b in intcodes.keys():
@@ -184,6 +234,11 @@ while intcodes[position] != 99:
                 intcodes[d + relative_base] = e
             position += 4
         elif param_op == 3:
+            cur_panel = hull.get(robot_position)
+            if (cur_panel == None) or cur_panel == False:
+                input_val = 0
+            else:
+                input_val = 1
             if b_mode == 0:
                 intcodes[b] = input_val
             else:
@@ -191,6 +246,48 @@ while intcodes[position] != 99:
             position += 2
         elif param_op == 4:
             print(op1)
+            if paintMode:
+                if op1 == 0:
+                    hull[robot_position] = False
+                else:
+                    hull[robot_position] = True
+            else:
+                if op1 == 0:  # turn LEFT
+                    if robot_direction == 'U':
+                        robot_direction = 'L'
+                    elif robot_direction == 'L':
+                        robot_direction = 'D'
+                    elif robot_direction == 'D':
+                        robot_direction = 'R'
+                    else:
+                        robot_direction = 'U'
+                else:  # turn RIGHT
+                    if robot_direction == 'U':
+                        robot_direction = 'R'
+                    elif robot_direction == 'L':
+                        robot_direction = 'U'
+                    elif robot_direction == 'D':
+                        robot_direction = 'L'
+                    else:
+                        robot_direction = 'D'
+                if robot_direction == 'U':
+                    new_robot_position = (robot_position[0], robot_position[1] + 1)
+                elif robot_direction == 'L':
+                    new_robot_position = (robot_position[0] - 1, robot_position[1])
+                elif robot_direction == 'D':
+                    new_robot_position = (robot_position[0], robot_position[1] - 1)
+                else:
+                    new_robot_position = (robot_position[0] + 1, robot_position[1])
+                robot_position = new_robot_position
+                if robot_position[0] > maxX:
+                    maxX = robot_position[0]
+                if robot_position[0] < minX:
+                    minX = robot_position[0]
+                if robot_position[1] > maxY:
+                    maxY = robot_position[1]
+                if robot_position[1] < minY:
+                    minY = robot_position[1]
+            paintMode = not paintMode
             position += 2
         elif param_op == 5:
             if op1 != 0:
@@ -229,3 +326,20 @@ while intcodes[position] != 99:
         elif param_op == 9:
             relative_base += op1
             position += 2
+
+grid = [['.' for x in range(minX, maxX + 1)] for y in range(minY, maxY + 1)]
+print(hull)
+x = 0
+y = 0
+for j in range(len(grid) + 1):
+    for i in range(len(grid[0])):
+        tup = (x, y)
+        if tup in hull.keys():
+            if hull.get(tup):
+                grid[j][i] = '#'
+        x += 1
+    x = 0
+    y -= 1
+
+for r in range(len(grid)):
+    print(grid[r])

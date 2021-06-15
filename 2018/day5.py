@@ -1,8 +1,3 @@
-import time
-
-current_milli_time = lambda: int(round(time.time() * 1000))
-
-
 def react(poly):
     new_poly = list()
     last = ''
@@ -17,24 +12,20 @@ def react(poly):
                 new_poly.append(letter)
     return(len(new_poly))
 
-start = current_milli_time()
-poly1 = ''
+first_poly = ''
 with open('day5.txt', 'r') as f:
-    poly1 = f.read().strip()
+    first_poly = f.read().strip()
     f.close()
 
-leng = react(poly1)
-mid = current_milli_time()
-print("time taken for part 1: " + str(mid - start))
+print(react(first_poly))
 
-alpha = "abcdefghijklmnopqrstuvwxyz"
-lengths = list()
-for a in alpha:
-    reduced_poly = poly1.replace(a, '').replace(a.upper(), '')
-    length = react(reduced_poly)
-    lengths.append(length)
+letters = set([c.lower() for c in first_poly])
+poly_lengths = list()
+for l in letters:
+    replaced_poly = first_poly.replace(l, '').replace(l.upper(), '')
+    poly_lengths.append((react(replaced_poly)))
 
 
-print(min(lengths))
-end = current_milli_time()
-print("time taken for part 1: " + str(end - mid))
+print(min(poly_lengths))
+
+
