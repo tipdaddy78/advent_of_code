@@ -1,7 +1,7 @@
-directions = list()
-with open('day6.txt', 'r') as f:
-    directions = f.readlines()
-    f.close()
+from util.FileHelper import read_file_multiple_lines
+
+directions = read_file_multiple_lines('2015', 'day6')
+
 
 def take_action(min_x, min_y, max_x, max_y, a, onOff, bright):
     for y in range(int(min_y), int(max_y) + 1):

@@ -1,7 +1,6 @@
-lines = list()
-with open('day8.txt', 'r') as f:
-    lines = [line.strip() for line in f]
-    f.close()
+from util.FileHelper import read_file_multiple_lines
+
+lines = read_file_multiple_lines('2015', 'day8')
 
 x = "aaa\"aaa"
 y = x.encode()

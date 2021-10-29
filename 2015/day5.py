@@ -1,7 +1,6 @@
-strings = list()
-with open('day5.txt', 'r') as f:
-    strings = f.readlines()
-    f.close()
+from util.FileHelper import read_file_multiple_lines
+
+strings = read_file_multiple_lines('2015', 'day5')
 
 def part1():
     nice = 0

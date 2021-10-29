@@ -1,7 +1,6 @@
-puzzle = ''
-with open('day1.txt', 'r') as f:
-    puzzle = f.readline().strip()
-    f.close()
+from util.FileHelper import read_file_single_line
+
+puzzle = read_file_single_line('2015', 'day1')
 
 floor = 0
 first = True

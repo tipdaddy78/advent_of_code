@@ -1,7 +1,6 @@
-cubes = list()
-with open('day2.txt', 'r') as f:
-    cubes = f.readlines()
-    f.close()
+from util.FileHelper import read_file_multiple_lines
+
+cubes = read_file_multiple_lines('2015', 'day2')
 
 paper_sum = 0
 ribbon_sum = 0

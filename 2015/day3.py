@@ -1,7 +1,6 @@
-directions = ''
-with open('day3.txt', 'r') as f:
-    directions = f.readline().strip()
-    f.close()
+from util.FileHelper import read_file_single_line
+
+directions = read_file_single_line('2015', 'day3')
 
 houses = set()
 x = 0

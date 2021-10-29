@@ -1,7 +1,7 @@
-directions = list()
-with open('day7.txt', 'r') as f:
-    directions = f.readlines()
-    f.close()
+from util.FileHelper import read_file_multiple_lines
+
+directions = read_file_multiple_lines('2015', 'day7')
+
 
 class CPU:
     def __init__(self):
