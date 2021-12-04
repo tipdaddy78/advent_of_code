@@ -75,12 +75,15 @@ for d in data:
 boards.append(b)
 
 # Start calling numbers
+# New Boards is for part 2, as we want to stop trying to call for a specific board once it's gotten a bingo
 for v in called_values:
     new_boards = list()
     for b in boards:
         b.add_to_marked(int(v))
         winner = b.has_bingo()
         if winner:
+            # Part 1 Answer will be the first time this happens.
+            # Part 2 Answer will be the last time this happens.
             print("BINGOOOOOO")
             print("Winning Score is:", b.get_score())
         else:
