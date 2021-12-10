@@ -1,8 +1,9 @@
 from collections import deque as queue
 
 # Direction vectors
-dRow = [ -1, 0, 1, 0]
-dCol = [ 0, 1, 0, -1]
+dRow = [-1, 0, 1, 0]
+dCol = [0, 1, 0, -1]
+
 
 # Checks that x/y are inbounds
 # Checks that it hasn't been to the point before.
@@ -15,6 +16,7 @@ def is_valid_bfs_matrix_goal(m, vis, x, y):
     if m[y][x] == '#':
         return False
     return True
+
 
 # For 2D arrays of '.' and '#' matrices.  '.' = open, '#' = wall
 # Returns the shortest path between start/goal or an empty list.
