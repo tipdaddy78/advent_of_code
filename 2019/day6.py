@@ -1,4 +1,4 @@
-with open('day6.txt', 'r') as f:
+with open('input/day6.txt', 'r') as f:
     orbits = f.readlines()
     f.close()
 

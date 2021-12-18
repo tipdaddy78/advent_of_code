@@ -23,7 +23,7 @@ class amplifier:
 
 intcodes = list()
 base_intcodes = list()
-with open('day7.txt', 'r') as f:
+with open('input/day7.txt', 'r') as f:
     data = f.read()
     string_codes = data.strip().split(',')
     for code in string_codes:

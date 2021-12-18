@@ -1,7 +1,7 @@
 intcodes = dict()
 input_val = 1
 
-with open('day11.txt', 'r') as f:
+with open('input/day11.txt', 'r') as f:
     data = f.read()
     string_codes = data.strip().split(',')
     for c in range(len(string_codes)):

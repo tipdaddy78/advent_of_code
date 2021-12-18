@@ -1,6 +1,6 @@
 from math import gcd
 
-with open('day12.txt', 'r') as f:
+with open('input/day12.txt', 'r') as f:
     data = f.readlines()
     f.close()
 

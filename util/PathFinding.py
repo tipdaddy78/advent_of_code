@@ -1,5 +1,7 @@
 from collections import deque as queue
 
+# For dijkstra's algorithm, see 2021/day15
+
 # Direction vectors
 dRow = [-1, 0, 1, 0]
 dCol = [0, 1, 0, -1]

@@ -6,7 +6,7 @@ def sortSlope(val):
     else:
         return 1000000000000
 
-with open('day10.txt', 'r') as f:
+with open('input/day10.txt', 'r') as f:
     grid = f.readlines()
     f.close()
 

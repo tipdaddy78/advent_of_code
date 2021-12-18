@@ -1,7 +1,8 @@
-wires = list()
-with open('day3.txt', 'r') as f:
-    wires = f.readlines()
-    f.close()
+import sys
+
+from util.FileHelper import read_file_multiple_lines
+
+wires = read_file_multiple_lines('2019', 'day3')
 
 wire1_steps = dict()
 wire2_steps = dict()
@@ -74,6 +75,12 @@ for point in wire1_steps:
             continue
         else:
             intersection_points[point] = wire1_steps[point] + wire2_steps[point]
+# Part 1 determine closest intersection
+closest = sys.maxsize
+for i_p in intersection_points.keys():
+    dist = abs(i_p[0]) + abs(i_p[1])
+    closest = min(closest, dist)
+print(closest)
 
 lowest = 10000000000000000000000000000000000000000000000
 for point in intersection_points:
@@ -81,4 +88,3 @@ for point in intersection_points:
         lowest = intersection_points[point]
 
 print(lowest)
-

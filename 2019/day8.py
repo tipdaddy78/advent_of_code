@@ -1,4 +1,4 @@
-with open('day8.txt', 'r') as f:
+with open('input/day8.txt', 'r') as f:
     image = f.read().strip()
     f.close()
 
