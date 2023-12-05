@@ -24,4 +24,5 @@ def read_json_file(year, filename):
     data = dict()
     with open(filepath) as json_file:
         data = json.load(json_file)
+        json_file.close()
     return data
